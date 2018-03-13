@@ -19,7 +19,51 @@
 <style>
   .platform-ios .manual-ios-statusbar-padding{padding-top:20px}.manual-remove-top-padding{padding-top:0}.manual-remove-top-padding .scroll{padding-top:0!important}.list.card.manual-card-fullwidth,ion-list.manual-list-fullwidth div.list{margin-left:-10px;margin-right:-10px}.list.card.manual-card-fullwidth>.item,ion-list.manual-list-fullwidth div.list>.item{border-radius:0;border-left:0;border-right:0}.show-list-numbers-and-dots ul{list-style-type:disc;padding-left:40px}.show-list-numbers-and-dots ol{list-style-type:decimal;padding-left:40px}
 </style>
-</head>  
+ <style>
+    .zoom-pane {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .zoom-pane .scroll {
+      min-height: 100% !important;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-direction: normal;
+      -moz-box-direction: normal;
+      -webkit-box-orient: horizontal;
+      -moz-box-orient: horizontal;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+      -webkit-box-pack: center;
+      -moz-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-align-content: stretch;
+      -ms-flex-line-pack: stretch;
+      align-content: stretch;
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
+    .zoom-pane img {
+      width: 100% !important;
+      vertical-align: top !important;
+    }
+  </style>
+</head>
+
 <body ng-app="app">
   <div>
     <div>
@@ -39,9 +83,13 @@
       <ion-content padding="true" class="has-header">
         <button class="button button-block button-positive" ng-click="triggerInputFile()">Choose File</button>
         <input type="file" class="inputFile" name="inputFile" accept="video/*,image/*" onchange="angular.element(this).scope().inputFileChanged(this)">
+        <ion-scroll id="mapImage" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" max-zoom="15" overflow-scroll="false">
+
           <center>
-          <img ng-src="{{item.content}}"/>
+            <img ng-src="{{item.content}}" />
           </center>
+        </ion-scroll>
+
       </ion-content>
     </ion-view>
   </script>
@@ -53,8 +101,7 @@
           $scope.addItem = function() {
             alert('add item');
           }
-          $scope.item={}
-          
+          $scope.item = {}
           $scope.triggerInputFile = function() {
             document.getElementsByClassName('inputFile')[0].click()
           }
