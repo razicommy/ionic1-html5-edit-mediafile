@@ -20,111 +20,99 @@
   .platform-ios .manual-ios-statusbar-padding{padding-top:20px}.manual-remove-top-padding{padding-top:0}.manual-remove-top-padding .scroll{padding-top:0!important}.list.card.manual-card-fullwidth,ion-list.manual-list-fullwidth div.list{margin-left:-10px;margin-right:-10px}.list.card.manual-card-fullwidth>.item,ion-list.manual-list-fullwidth div.list>.item{border-radius:0;border-left:0;border-right:0}.show-list-numbers-and-dots ul{list-style-type:disc;padding-left:40px}.show-list-numbers-and-dots ol{list-style-type:decimal;padding-left:40px}
 </style>
 </head>  
-<body ng-app="app" animation="slide-left-right-ios7" >
+<body ng-app="app">
   <div>
     <div>
       <ion-nav-bar class="bar-stable">
         <ion-nav-back-button></ion-nav-back-button>
       </ion-nav-bar>
-      <ion-nav-view></ion-nav-view>
+      <ion-nav-view>
+      </ion-nav-view>
     </div>
   </div>
+
   <script id="home.html" type="text/ng-template">
     <ion-view title="Home" id="page1">
+      <ion-nav-buttons side="right" class="has-header">
+        <button class="button button-icon icon ion-plus-circled" ng-click="addItem()"></button>
+      </ion-nav-buttons>
       <ion-content padding="true" class="has-header">
-    <input type="file" class="inputFile" accept="image/*"       >
+        <button class="button button-block button-positive" ng-click="triggerInputFile()">Choose File</button>
+        <input type="file" class="inputFile" name="inputFile" accept="video/*,image/*" onchange="angular.element(this).scope().inputFileChanged(this)">
+          <center>
+          <img ng-src="{{item.content}}"/>
+          </center>
       </ion-content>
     </ion-view>
   </script>
+
   <script>
-/*create js object app, bind to html app, use ionic framework*/    
-var app=angular.module('app',['ionic']);
-/******************************/
-/*define CONTROLLERS & CONFIGS*/
-/******************************/      
-/*define app.controller methods*/    
-app.controller('homeCtrl',['$scope',function($scope){
-  
-}]); 
-/*define app.config method*/    
-app.config(function($stateProvider,$urlRouterProvider){
-  $stateProvider.state('home',{url:'/page1',templateUrl:'home.html',controller:'homeCtrl'});
-  $urlRouterProvider.otherwise('/page1')
-});
-/************************/
-/*define SYSTEM SETTINGS*/
-/************************/
-app.config(function($ionicConfigProvider, $sceDelegateProvider){
-  $sceDelegateProvider.resourceUrlWhitelist([ 'self','*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
-})
-app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-});
-
-/*
-  This directive is used to disable the "drag to open" functionality of the Side-Menu
-  when you are dragging a Slider component.
-*/
-app.directive('disableSideMenuDrag', ['$ionicSideMenuDelegate', '$rootScope', function($ionicSideMenuDelegate, $rootScope) {
-    return {
-        restrict: "A",  
-        controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-
-            function stopDrag(){
-              $ionicSideMenuDelegate.canDragContent(false);
-            }
-
-            function allowDrag(){
-              $ionicSideMenuDelegate.canDragContent(true);
-            }
-
-            $rootScope.$on('$ionicSlides.slideChangeEnd', allowDrag);
-            $element.on('touchstart', stopDrag);
-            $element.on('touchend', allowDrag);
-            $element.on('mousedown', stopDrag);
-            $element.on('mouseup', allowDrag);
-
-        }]
-    };
-}]);
-
-/*
-  This directive is used to open regular and dynamic href links inside of inappbrowser.
-*/
-app.directive('hrefInappbrowser', function() {
-  return {
-    restrict: 'A',
-    replace: false,
-    transclude: false,
-    link: function(scope, element, attrs) {
-      var href = attrs['hrefInappbrowser'];
-
-      attrs.$observe('hrefInappbrowser', function(val){
-        href = val;
+    angular.module('app', ['ionic'])
+      .controller('homeCtrl', ['$scope',
+        function($scope) {
+          $scope.addItem = function() {
+            alert('add item');
+          }
+          $scope.item={}
+          
+          $scope.triggerInputFile = function() {
+            document.getElementsByClassName('inputFile')[0].click()
+          }
+          $scope.inputFileChanged = function(ele) {
+            var file = ele.files[0];
+            $scope.singlefile = {}
+            var fileReader = new FileReader();
+            fileReader.onload = function(fileLoadedEvent) {
+              var canvas = document.createElement("canvas");
+              canvas.height = 100;
+              canvas.width = 100;
+              var context = canvas.getContext('2d');
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              var inputImage = new Image;
+              inputImage.onload = function() {
+                var w = inputImage.width
+                var h = inputImage.height
+                if (w >= h) {
+                  var newW1 = parseFloat(w / 2) - parseFloat(h / 2)
+                  var newW2 = h
+                  var newH1 = 0
+                  var newH2 = h
+                } else {
+                  var newW1 = 0
+                  var newW2 = w
+                  var newH1 = parseFloat(h / 2) - parseFloat(w / 2)
+                  var newH2 = w
+                }
+                context.drawImage(
+                  inputImage,
+                  newW1, newH1,
+                  newW2, newH2,
+                  0, 0,
+                  canvas.width, canvas.height);
+                $scope.singlefile.thumb = canvas.toDataURL();
+                //console.log($scope.singlefile.thumb)
+                $scope.$apply();
+              };
+              inputImage.src = fileLoadedEvent.target.result;
+              $scope.item.name = file.name;
+              $scope.item.content = fileLoadedEvent.target.result;
+              $scope.$apply();
+              console.log($scope.singlefile.content)
+            };
+            fileReader.readAsDataURL(file);
+          }
+        }
+      ])
+      .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+          .state('home', {
+            url: '/page1',
+            templateUrl: 'home.html',
+            controller: 'homeCtrl'
+          })
+        $urlRouterProvider.otherwise('/page1')
       });
-      
-      element.bind('click', function (event) {
-
-        window.open(href, '_system', 'location=yes');
-
-        event.preventDefault();
-        event.stopPropagation();
-
-      });
-    }
-  };
-});
   </script>
-  </body>
+</body>
+
 </html>
