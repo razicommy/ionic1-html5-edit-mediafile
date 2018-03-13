@@ -96,6 +96,7 @@
               inputImage.src = fileLoadedEvent.target.result;
               $scope.item.name = file.name;
               $scope.item.content = fileLoadedEvent.target.result;
+              localStorage.setItem("itemcontent", $scope.item.content);
               $scope.$apply();
               console.log($scope.singlefile.content)
             };
