@@ -60,6 +60,7 @@
     .zoom-pane img {
       width: 100% !important;
       vertical-align: top !important;
+      background-color: black;
     }
   </style>
 </head>
@@ -81,16 +82,16 @@
         <button class="button button-icon icon ion-plus-circled" ng-click="addItem()"></button>
       </ion-nav-buttons>
       <ion-content padding="true" class="has-header">
-        <div class="padding" style="background-color:black;">
+        <div class="padding" style="background:black; ">
         <button class="button button-block button-calm" ng-click="triggerInputFile()">Choose File</button>
         <input type="file" class="inputFile" style="display:none;" name="inputFile" onchange="angular.element(this).scope().inputFileChanged(this)">
 
           <center>
-            <img ng-src="{{item.thumb}}" style="padding:1px;border:1px solid #021a40;background-color:lightgrey;" />
+            <img ng-src="{{item.thumb}}" style="padding:1px;border:1px solid #021a40;" />
                        <p style="color:white;"> {{item.name}}</p>
           </center>
         </div>
-        <ion-scroll id="mapImage" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" max-zoom="15" overflow-scroll="false">
+        <ion-scroll id="mapImage" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" max-zoom="15" overflow-scroll="false" style="background-color:black">
 
           <img ng-src="{{item.content}}" />
 
