@@ -3,17 +3,17 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.helloworld"
+        id        = "my.com.razi.ibpg"
         version   = "1.0.0">
 
-    <name>Ionic Blank</name>
+    <name>IBPG</name>
 
     <description>
-        Ionic Blank with Hello World sample config.
+        Ionic Build Phone Gap
     </description>
 
-    <author href="http://phonegap.com" email="support@phonegap.com">
-        PhoneGap Team
+    <author href="http://github.com/razicommy" email="razi.com.my@gmail.com">
+        RaziComMy
     </author>
 
     <!-- Define the main entry-point to the application -->
@@ -25,7 +25,7 @@
     <preference name="android-minSdkVersion"      value="14" />
 
     <!-- Define a specific version of PhoneGap to build into your app. -->
-    <!-- <preference name="phonegap-version"       value="cli-6.0.0" /> -->
+    <preference name="phonegap-version"       value="cli-6.5.0" /> 
 
     <!-- Plugins -->
     <!-- Core plugins -->
