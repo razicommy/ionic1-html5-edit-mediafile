@@ -76,13 +76,13 @@
     </div>
   </div>
 
-  <script id="home.html" type="text/ng-template">
+ <script id="home.html" type="text/ng-template">
     <ion-view title="Home" id="page1">
       <ion-nav-buttons side="right" class="has-header">
         <button class="button button-icon icon ion-plus-circled" ng-click="addItem()"></button>
       </ion-nav-buttons>
-      <ion-content padding="true" class="has-header" style="background:black; ">
-        <div class="padding" style="background:black; ">
+      <ion-content padding="true" class="has-header" style="background: linear-gradient(black, gray);">
+        <div class="padding">
         <button class="button button-block button-calm" ng-click="triggerInputFile()">Browse</button>
         <input type="file" class="inputFile" style="display:none;" name="inputFile" onchange="angular.element(this).scope().inputFileChanged(this)">
 
@@ -91,7 +91,7 @@
                        <p style="color:white;"> {{item.name}}</p>
           </center>
         </div>
-        <ion-scroll id="mapImage" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" max-zoom="15" overflow-scroll="false" style="background-color:black;vertical-align: top!important;">
+        <ion-scroll id="mapImage" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" max-zoom="15" overflow-scroll="false" >
 
           <img ng-src="{{item.content}}"style="padding:1px;border:1px solid yellow;" />
 
